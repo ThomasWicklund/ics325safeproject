@@ -111,7 +111,7 @@ function buildPi_idMenu($pi_id_select, $exclude_past){
     $db = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
     $db->set_charset("utf8");
     if($exclude_past){
-        $sql = "SELECT DISTINCT PI_id FROM cadence where start_date >= NOW() ORDER BY start_date";
+        $sql = "SELECT DISTINCT PI_id FROM cadence where NOW() between start_date and end_date or start_date >= NOW() ORDER BY start_date";
     } else{
         $sql = "SELECT DISTINCT PI_id FROM cadence ORDER BY start_date";
     }
@@ -385,10 +385,10 @@ function buildTeamMenu(){
                   $iterationArray[]=$row["iteration"];
                 }
               };
-              $count_sequence = count($sequenceArray);
-              for($i = 0; $i < $count_sequence; $i++){
-                $iteration = $iterationArray[$i];
+              $i = 0;
+              foreach($iterationArray as $iteration){
                 $sequence = $sequenceArray[$i];
+                $i++;
                 $rownum='';
                 $valueForJS='';
                 $db = new mysqli(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
@@ -678,6 +678,7 @@ function buildTeamMenu(){
 
 
       </script>';
+      
         }
 
           ///////////////////////////Funtion End/////////////////////////////////////////////////////////
